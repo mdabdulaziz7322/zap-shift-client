@@ -20,7 +20,7 @@ const ClientsSlider = () => {
           <h2 className="text-3xl md:text-4xl font-bold">
             Our Clients
           </h2>
-          <p className="text-gray-600 mt-2">
+          <p className="text-gray-600 mt-2 text-xs md:text-sm">
             Trusted by leading companies across Bangladesh
           </p>
         </div>

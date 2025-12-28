@@ -7,18 +7,18 @@ import { Carousel } from 'react-responsive-carousel';
 
 const Banner = () => {
     return (
-         <Carousel autoPlay={true} infiniteLoop={true} showThumbs={false}>
+         <Carousel autoPlay={true} infiniteLoop={true} showThumbs={false} className='max-w-6xl mx-auto'>
                 <div>
                     <img src={banner1} />
-                    <p className="legend">Legend 1</p>
+                    
                 </div>
                 <div>
                     <img src={banner2} />
-                    <p className="legend">Legend 2</p>
+                    
                 </div>
                 <div>
                     <img src={banner3} />
-                    <p className="legend">Legend 3</p>
+                    
                 </div>
             </Carousel>
     );

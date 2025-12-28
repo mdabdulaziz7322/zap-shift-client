@@ -4,7 +4,7 @@ import img from "../../../assets/location-merchant.png";
 const BeMerchant = () => {
     return (
         <div data-aos="zoom-in-up" className="hero  bg-base-200 ">
-            <div className="max-w-6xl mx-auto px-15 py-15 bg-[url('assets/be-a-merchant-bg.png')] bg-no-repeat bg-[#03373D] rounded-3xl">
+            <div className="max-w-3xl md:max-w-5xl mx-auto px-15 py-15 bg-[url('assets/be-a-merchant-bg.png')] bg-no-repeat bg-[#03373D] rounded-3xl">
                 <div className="hero-content flex-col lg:flex-row-reverse">
                 <img
                     src={img}

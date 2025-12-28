@@ -34,7 +34,7 @@ const FeaturesSection = () => {
                 {features.map((feature, index) => (
                     <div
                         key={index}
-                        className="max-w-6xl mx-auto bg-base-100 rounded-xl shadow-md p-5 flex flex-col md:flex-row items-center gap-8"
+                        className="max-w-5xl mx-auto bg-base-100 rounded-xl shadow-md p-5 flex flex-col md:flex-row items-center gap-8"
                     >
                         {/* Left: Animated Image */}
                         <div className=" flex justify-center">
