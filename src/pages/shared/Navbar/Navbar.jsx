@@ -1,11 +1,28 @@
 import React from 'react';
-import { NavLink } from 'react-router';
+import { Link, NavLink, useNavigate } from 'react-router';
 import ZapShiftLogo from '../ZapShiftLogo/ZapShiftLogo';
+import UseAuth from '../../../hooks/UseAuth';
 
 const Navbar = () => {
+    const { user, signOutUser } = UseAuth();
+    const navigate = useNavigate();
+    // const location = useLocation();
+    // const from = location.state || '/';
+    // navigate(from);
+
+    const handleSignOut = () => {
+        signOutUser()
+            .then(() => navigate("/"))
+            .catch((err) => console.error(err));
+    };
+
     const navItems = <>
-        <li><NavLink to= "/">Home</NavLink></li>
-        <li><NavLink to= "/about">About</NavLink></li>
+        <li className='hover:bg-[#CAEB66]'><NavLink to="/">Home</NavLink></li>
+        <li className='hover:bg-[#CAEB66]'><NavLink to="/send-parcel">Send a parcel</NavLink></li>
+        <li className='hover:bg-[#CAEB66]'><NavLink to="/coverage">Coverage</NavLink></li>
+        <li className='hover:bg-[#CAEB66]'><NavLink to="/about">About Us</NavLink></li>
+        <li className='hover:bg-[#CAEB66]'><NavLink to="/pricing">Pricing</NavLink></li>
+        <li className='hover:bg-[#CAEB66]'><NavLink to="/rider">Be a Rider</NavLink></li>
     </>
     return (
         <div className="navbar bg-base-100 max-w-7xl mx-auto mb-10 p-4">
@@ -20,17 +37,35 @@ const Navbar = () => {
                         {navItems}
                     </ul>
                 </div>
-                <a className="btn btn-ghost text-xl">
-                   <ZapShiftLogo></ZapShiftLogo> 
-                </a>
+               <Link to="/"><ZapShiftLogo></ZapShiftLogo></Link>
             </div>
             <div className="navbar-center hidden lg:flex">
-                <ul className="menu menu-horizontal px-1">
+                <ul className="menu menu-horizontal  px-1">
                     {navItems}
                 </ul>
             </div>
-            <div className="navbar-end">
-                <a className="btn">Button</a>
+            <div className="navbar-end flex gap-2">
+
+                {user ? (
+                    <div className='flex gap-2'>
+                        <Link to='/dashboard'>
+                            <button className="btn btn-dash border-[#8bb901] hover:bg-[#8bb901] ">Dashboard</button>
+                        </Link>
+                        <button onClick={handleSignOut} className="btn bg-[#CAEB66] rounded-xl px-6">Sign Out</button>
+                    </div>
+                ) : (
+
+                    <div className='flex gap-2'>
+                        <Link to='/login'>
+                            <button className="btn btn-outline border-[#8bb901] rounded-xl px-6">Login</button>
+                        </Link>
+                        <Link to='/register'>
+                            <button className="btn bg-[#CAEB66] rounded-xl px-6">Register</button>
+                        </Link>
+                    </div>
+                )}
+
+
             </div>
         </div>
     );
