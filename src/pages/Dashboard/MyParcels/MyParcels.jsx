@@ -4,12 +4,16 @@ import UseAuth from '../../../hooks/UseAuth';
 import useAxiosSecure from '../../../hooks/useAxiosSecure';
 import Swal from 'sweetalert2';
 import { useQuery } from '@tanstack/react-query';
+import { usePayment } from '../../../context/PaymentContext';
+
 
 const MyParcels = () => {
     const { user } = UseAuth();
     const axiosSecure = useAxiosSecure();
+    const { openPaymentModal } = usePayment();
     const { data: myParcels = [], refetch } = useQuery({
-        queryKey: ['myParcels', user.email],
+        queryKey: ['myParcels', user?.email],
+        enabled: !!user?.email,
         queryFn: async () => {
             const res = await axiosSecure.get(`/parcels?email=${user.email}`);
             return res.data;
@@ -18,7 +22,7 @@ const MyParcels = () => {
     console.log(myParcels);
 
     const handleDelete = async (id) => {
-       const confirm = await Swal.fire({
+        const confirm = await Swal.fire({
             title: 'Are you sure?',
             text: "You won't be able to recover this parcel!",
             icon: 'warning',
@@ -28,31 +32,31 @@ const MyParcels = () => {
             confirmButtonText: 'Yes, delete it!',
         });
         if (confirm.isConfirmed) {
-            try{
+            try {
                 axiosSecure.delete(`/parcels/${id}`).
-            then( res => {
-                console.log(res.data);
-                    if (res.data.deletedCount) {
-                        Swal.fire({
-                            title: 'Deleted!',
-                            text: 'Your parcel has been deleted.',
-                            icon: 'success',
-                            timer: 1500,
-                            showConfirmButton: false,
-                        });
-                       
-                    }
-                    refetch();
-                
-            });
+                    then(res => {
+                        console.log(res.data);
+                        if (res.data.deletedCount) {
+                            Swal.fire({
+                                title: 'Deleted!',
+                                text: 'Your parcel has been deleted.',
+                                icon: 'success',
+                                timer: 1500,
+                                showConfirmButton: false,
+                            });
+
+                        }
+                        refetch();
+
+                    });
             } catch (error) {
                 console.error('Error deleting parcel:', error);
             }
-            
+
         }
     };
-        
-   
+
+
 
     const total = myParcels.length;
     const returns = myParcels.filter(parcel => parcel.returned).length;
@@ -236,7 +240,11 @@ const MyParcels = () => {
 
                                 <td className="text-right">
                                     <div className="flex justify-end gap-1">
-                                        <button className="btn btn-xs btn-success">
+                                        <button
+                                            onClick={() => openPaymentModal(parcel._id)}
+                                            className="btn btn-success btn-xs"
+                                            disabled={parcel.payment_status === 'paid'}
+                                        >
                                             Pay
                                         </button>
                                         <button className="btn btn-xs btn-neutral">

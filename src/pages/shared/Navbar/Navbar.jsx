@@ -22,7 +22,7 @@ const Navbar = () => {
         <li className='hover:bg-[#CAEB66]'><NavLink to="/coverage">Coverage</NavLink></li>
         <li className='hover:bg-[#CAEB66]'><NavLink to="/about">About Us</NavLink></li>
         <li className='hover:bg-[#CAEB66]'><NavLink to="/pricing">Pricing</NavLink></li>
-        <li className='hover:bg-[#CAEB66]'><NavLink to="/rider">Be a Rider</NavLink></li>
+        <li className='border border-dashed border-[#496100] text-green-900 hover:bg-[#CAEB66]'><NavLink to="/rider">Be a Rider</NavLink></li>
     </>
     return (
         <div className="navbar bg-base-100 max-w-7xl mx-auto mb-10 p-4">

@@ -132,7 +132,7 @@ const SendParcel = () => {
             delivery_status: "not collected",
             deliveryCost: totalCost,
             payment_status: "pending",
-            creation_date: new Date().toISOString(),
+            created_at: new Date().toISOString(),
             tracking_id: generateTrackingId(),
         };
 

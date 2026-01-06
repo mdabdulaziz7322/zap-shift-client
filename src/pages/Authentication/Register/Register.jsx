@@ -1,26 +1,70 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import UseAuth from '../../../hooks/UseAuth';
 import SocialLogin from '../SocialLogin/SocialLogin';
 import { useNavigate } from 'react-router';
+import axios from 'axios';
+import useAxios from '../../../hooks/useAxios';
+import Swal from 'sweetalert2';
 
 const Register = () => {
 
     const { register, handleSubmit, formState: { errors } } = useForm();
-    const { createUser } = UseAuth();
+    const { createUser, updateUserProfile } = UseAuth();
     const navigate = useNavigate();
+    const [profilePic, setProfilePic] = useState('')
+    const axiosInstance = useAxios();
 
-    const onSubmit = data => {
-        console.log(data);
-        createUser(data.email, data.password)
-            .then(result => {
-                const user = result.user;
-                console.log(user);
-                navigate("/login");
-            })
-            .catch(error => {
-                console.error(error);
+    const onSubmit = async (data) => {
+        try {
+            if (!profilePic) {
+                alert("Please upload a profile picture");
+                return;
+            }
+
+            const result = await createUser(data.email, data.password);
+            console.log(result)
+
+            const userInfo = {
+                name: data.name,
+                email: data.email,
+                profilePic,
+                role: "user",
+                createdAt: new Date(),
+                lastLogIn: new Date().toISOString(),
+            };
+
+            await axiosInstance.post('/users', userInfo);
+
+            await updateUserProfile({
+                displayName: data.name,
+                photoURL: profilePic,
             });
+
+            navigate("/login");
+
+        } catch (error) {
+            if (error.code === "auth/email-already-in-use") {
+                Swal.fire({
+                    icon: "error",
+                    title: "Email already in use",
+                    text: "Please login instead",
+                });
+                return;
+            }
+
+            console.error("Registration error:", error);
+        }
+    };
+    const handleImageUpload = async (e) => {
+        const image = e.target.files[0]
+        console.log(image)
+        const formData = new FormData();
+        formData.append('image', image)
+        const ImageUrl = `https://api.imgbb.com/1/upload?key=${import.meta.env.VITE_IMAGE_KEY}`
+
+        const res = await axios.post(ImageUrl, formData)
+        setProfilePic(res.data.data.url)
     }
 
     return (
@@ -34,6 +78,21 @@ const Register = () => {
 
                     <form onSubmit={handleSubmit(onSubmit)}>
                         <fieldset className="fieldset space-y-4">
+
+                            <div className="flex justify-left mb-4">
+                                <label className="relative cursor-pointer">
+                                    <input
+                                        type="file"
+                                        onChange={handleImageUpload}
+                                        accept="image/*"
+                                        hidden
+                                    />
+
+                                    <div className="w-15 h-15 rounded-full border-2 border-dashed flex items-center justify-center bg-gray-100 hover:bg-gray-200">
+                                        <span className="text-2xl">📷</span>
+                                    </div>
+                                </label>
+                            </div>
 
                             <div>
                                 <label className="label">Name</label>

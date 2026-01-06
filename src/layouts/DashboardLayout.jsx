@@ -1,9 +1,18 @@
 import React, { useState } from 'react';
 import { NavLink, Outlet } from 'react-router';
 import ZapShiftLogo from '../pages/shared/ZapShiftLogo/ZapShiftLogo';
+import { FaTachometerAlt, FaBoxOpen, FaStore } from "react-icons/fa";
+import { MdPayment } from "react-icons/md";
+import PaymentModal from '../pages/Payment/PaymentModal';
 
 const DashboardLayout = () => {
     const [sidebarOpen, setSidebarOpen] = useState(false);
+
+    const navLinkClass = ({ isActive }) =>
+        `btn btn-ghost justify-start w-full gap-3 text-base ${isActive
+            ? "bg-[#CAEB66] text-black "
+            : "text-gray-600 hover:bg-[#CAEB66]"
+        }`;
 
     return (
         <div className="min-h-screen bg-base-200 flex">
@@ -17,38 +26,30 @@ const DashboardLayout = () => {
         `}
             >
                 {/* Logo */}
-                <div className="h-16 flex items-center px-6 font-bold text-xl ">
+                <div className="h-16 flex items-center  px-6 font-bold text-xl ">
                     <ZapShiftLogo></ZapShiftLogo>
                 </div>
 
                 {/* Menu */}
                 <nav className="px-4 py-4 space-y-2">
-                    <NavLink
-                        to="/dashboard"
-                        className="btn btn-ghost justify-start w-full"
-                    >
-                        Dashboard
+                    <NavLink to="/dashboard/overview" className={navLinkClass}>
+                        <FaTachometerAlt size={18} />
+                        Overview
                     </NavLink>
 
-                    <NavLink
-                        to="/dashboard/my-parcels"
-                        className="btn btn-ghost justify-start w-full"
-                    >
+                    <NavLink to="/dashboard/my-parcels" className={navLinkClass}>
+                        <FaBoxOpen size={18} />
                         My Parcels
                     </NavLink>
 
-                    <NavLink
-                        to="/dashboard/invoices"
-                        className="btn btn-ghost justify-start w-full"
-                    >
-                        Invoices
+                    <NavLink to="/dashboard/payment-history" className={navLinkClass}>
+                        <MdPayment size={18} />
+                        Payment History
                     </NavLink>
 
-                    <NavLink
-                        to="/dashboard/stores"
-                        className="btn btn-ghost justify-start w-full"
-                    >
-                        Stores
+                    <NavLink to="/dashboard/track-parcel" className={navLinkClass}>
+                        <FaStore size={18} />
+                        Track Parcel
                     </NavLink>
                 </nav>
             </aside>
@@ -73,7 +74,7 @@ const DashboardLayout = () => {
                         >
                             ☰
                         </button>
-                        
+
                     </div>
 
                     {/* RIGHT: User info */}
@@ -90,6 +91,7 @@ const DashboardLayout = () => {
                 {/* Page content */}
                 <main className="p-4 md:p-6 overflow-x-auto">
                     <Outlet />
+                    <PaymentModal />
                 </main>
             </div>
         </div>

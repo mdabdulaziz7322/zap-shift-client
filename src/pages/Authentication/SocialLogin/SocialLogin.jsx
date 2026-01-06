@@ -1,6 +1,7 @@
 import React from 'react';
 import UseAuth from '../../../hooks/UseAuth';
 import { useLocation, useNavigate } from 'react-router';
+import useAxios from '../../../hooks/useAxios';
 
 const SocialLogin = () => {
 
@@ -8,19 +9,34 @@ const SocialLogin = () => {
     const navigate = useNavigate();
     const from = location.state?.from || '/';
 
-    const {signInWithGoogle} = UseAuth();
+    const { signInWithGoogle } = UseAuth();
+    const axiosInstance = useAxios();
 
-    const handleGoogleSignIn = () => {
-        signInWithGoogle()
-            .then(result => {
-                const user = result.user;
-                console.log(user);
-                navigate(from);
-            })
-            .catch(error => {
-                console.error(error);
-            });
-    }
+    const handleGoogleSignIn = async () => {
+        try {
+            const result = await signInWithGoogle();
+            const user = result.user;
+
+            console.log("Google user:", user);
+
+            const userInfo = {
+                name: user.displayName,
+                email: user.email,
+                profilePic: user.photoURL,
+                role: "user",
+                createdAt: new Date(),
+                lastLogIn: new Date().toISOString(),
+            };
+
+            // save user to DB (backend will ignore if exists)
+            const res = await axiosInstance.post('/users', userInfo);
+            console.log("DB response:", res.data);
+
+            navigate(from);
+        } catch (error) {
+            console.error("Google sign-in error:", error);
+        }
+    };
     return (
         <div>
             <button onClick={handleGoogleSignIn} className="btn btn-outline w-full flex items-center justify-center gap-2">
