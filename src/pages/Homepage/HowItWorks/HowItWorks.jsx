@@ -59,7 +59,7 @@ const HowItWorks = () => {
                 className="bg-base-100 rounded-xl p-6 text-center shadow-sm hover:shadow-md transition"
               >
                 <div className="flex justify-center mb-4">
-                  <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center text-primary text-xl">
+                  <div className="w-12 h-12 rounded-full  flex items-center justify-center bg-[#8bb901]/10 text-[#8bb901] text-xl">
                     <Icon />
                   </div>
                 </div>

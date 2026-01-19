@@ -3,14 +3,18 @@ import React, { useEffect, useState } from 'react';
 import useAxiosSecure from '../../hooks/useAxiosSecure';
 import Swal from 'sweetalert2';
 import UseAuth from '../../hooks/UseAuth';
+import useTracking from '../../hooks/useTracking';
+import { useQueryClient } from '@tanstack/react-query';
 
 
 const CheckoutForm = ({ parcel, onSuccess }) => {
     const stripe = useStripe();
     const elements = useElements();
     const axiosSecure = useAxiosSecure();
-    const{user} = UseAuth();
-   
+    const { user } = UseAuth();
+    const { addTrackingStep } = useTracking();
+    const queryClient = useQueryClient();
+
     const [clientSecret, setClientSecret] = useState('');
     const [loading, setLoading] = useState(false);
 
@@ -45,12 +49,21 @@ const CheckoutForm = ({ parcel, onSuccess }) => {
                 parcelId: parcel._id,
                 amount: parcel.deliveryCost,
                 transactionId: paymentIntent.id,
-                email:user.email
+                email: user.email
             });
+
+            await addTrackingStep({
+                tracking_id: parcel.tracking_id,
+                status: "Paid",
+                label: "Payment Completed",
+                updated_by: user.email
+            });
+
+            queryClient.invalidateQueries(['myParcels']);
 
             Swal.fire('Success', 'Payment completed!', 'success');
             onSuccess();
-            
+
         }
 
         setLoading(false);

@@ -47,9 +47,9 @@ const FeaturesSection = () => {
 
                         {/* Divider */}
                         <div className="hidden md:flex flex-col items-center">
-                            <span className="w-2 h-2 bg-primary rounded-full"></span>
-                            <span className="w-px h-16 bg-primary my-2"></span>
-                            <span className="w-2 h-2 bg-primary rounded-full"></span>
+                            <span className="w-2 h-2  bg-[#8bb901] rounded-full"></span>
+                            <span className="w-px h-16 bg-[#8bb901] my-2"></span>
+                            <span className="w-2 h-2 bg-[#8bb901] rounded-full"></span>
                         </div>
 
                         {/* Right: Text */}

@@ -1,3 +1,4 @@
+import { useState } from "react";
 import ServiceCard from "./ServicesCard";
 import {
     FaShippingFast,
@@ -10,6 +11,9 @@ import {
 
 
 const Services = () => {
+
+    const [activeIndex, setActiveIndex] = useState(0);
+
     const servicesData = [
         {
             title: "Express & Standard Delivery",
@@ -70,6 +74,8 @@ const Services = () => {
                         <ServiceCard
                             key={index}
                             service={service}
+                            isActive={activeIndex === index}
+                            onClick={() => setActiveIndex(index)}
                         />
                     ))}
                 </div>

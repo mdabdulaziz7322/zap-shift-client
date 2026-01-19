@@ -3,6 +3,8 @@ import { Controller, useForm, Watch } from 'react-hook-form';
 import Swal from 'sweetalert2';
 import UseAuth from '../../hooks/UseAuth';
 import useAxiosSecure from '../../hooks/useAxiosSecure';
+import { useNavigate } from 'react-router';
+import useTracking from '../../hooks/useTracking';
 
 
 const generateTrackingId = () => {
@@ -15,6 +17,8 @@ const generateTrackingId = () => {
 const SendParcel = () => {
     const [serviceCenters, setServiceCenters] = useState([]);
     const [loading, setLoading] = useState(true);
+    const navigate = useNavigate();
+    const { addTrackingStep } = useTracking();
 
 
     const { user } = UseAuth();
@@ -124,7 +128,7 @@ const SendParcel = () => {
                 }
             }
         }
-
+        const tracking_id = generateTrackingId()
         // 3️⃣ Store the parcel data in state
         const parcelData = {
             ...data,
@@ -133,7 +137,7 @@ const SendParcel = () => {
             deliveryCost: totalCost,
             payment_status: "pending",
             created_at: new Date().toISOString(),
-            tracking_id: generateTrackingId(),
+            tracking_id: tracking_id
         };
 
         // 4️⃣ Show SweetAlert2 modal with cost breakdown
@@ -174,7 +178,7 @@ const SendParcel = () => {
         console.log("Saving to database:", parcelData);
 
         axiosSecure.post('/parcels', parcelData)
-            .then(response => {
+            .then( async (response) => {
                 console.log("Saved successfully:", response.data);
                 if (response.data.insertedId) {
                     //redirect to payment page with parcelData
@@ -186,6 +190,15 @@ const SendParcel = () => {
                         timer: 2000,
                         showConfirmButton: false,
                     });
+
+                    await addTrackingStep({
+                        tracking_id: parcelData.tracking_id,
+                        status: "submitted",
+                        label: "Parcel submitted",
+                        updated_by: user.email
+                    });
+
+                    navigate('/dashboard/my-parcels')
                 }
             })
             .catch(error => {
@@ -200,7 +213,7 @@ const SendParcel = () => {
     };
 
     return (
-        <section className="py-16 bg-base-200">
+        <section className="py-8 bg-base-200">
             <div className="max-w-6xl mx-auto shadow-sm rounded-4xl px-4 py-10 bg-white">
 
                 {/* Heading */}

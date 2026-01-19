@@ -7,7 +7,7 @@ import CheckoutForm from './CheckoutForm';
 
 
 
-const PaymentModal = ({ refetch }) => {
+const PaymentModal = () => {
     const { parcelId, closePaymentModal } = usePayment();
     const axiosSecure = useAxiosSecure();
     
@@ -42,7 +42,6 @@ const PaymentModal = ({ refetch }) => {
                             parcel={parcel}
                             onSuccess={() => {
                                 closePaymentModal();
-                                refetch();
                                 
                             }}
                         />

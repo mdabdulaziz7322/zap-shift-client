@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import UseAuth from '../../../hooks/UseAuth';
 import SocialLogin from '../SocialLogin/SocialLogin';
-import { useNavigate } from 'react-router';
+import { Link, useLocation, useNavigate } from 'react-router';
 import axios from 'axios';
 import useAxios from '../../../hooks/useAxios';
 import Swal from 'sweetalert2';
@@ -14,6 +14,8 @@ const Register = () => {
     const navigate = useNavigate();
     const [profilePic, setProfilePic] = useState('')
     const axiosInstance = useAxios();
+    const location = useLocation();
+    const from = location.state?.from || '/';
 
     const onSubmit = async (data) => {
         try {
@@ -41,7 +43,7 @@ const Register = () => {
                 photoURL: profilePic,
             });
 
-            navigate("/login");
+            navigate(from);
 
         } catch (error) {
             if (error.code === "auth/email-already-in-use") {
@@ -139,12 +141,15 @@ const Register = () => {
                             <div className="mt-6 text-center space-y-4">
 
                                 {/* Already have account */}
-                                <p className="text-sm text-gray-600">
-                                    Already have an account?{" "}
-                                    <a href="/login" className="text-primary font-medium link link-hover">
-                                        Login
-                                    </a>
-                                </p>
+
+                                <div className="mt-2 text-center text-sm text-gray-600">
+                                    <span>Already have an account?{" "}</span>
+                                    <Link state={{from}}
+                                        to="/login"
+                                        className="font-medium text-blue-600 hover:text-blue-700 hover:underline"
+                                    >Login
+                                    </Link>
+                                </div>
 
                                 {/* OR Divider */}
                                 <div className="flex items-center gap-3">

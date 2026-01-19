@@ -18,7 +18,7 @@ const BeMerchant = () => {
                     </p>
                     <div className='flex gap-2'>
                         <button className="btn btn-soft rounded-full bg-[#CAEB66] ">Become a Merchant</button>
-                        <button className="btn btn-outline btn-primary rounded-full text-[#CAEB66] border-[#CAEB66]">Earn with ZapShift Courier</button>
+                        <button className="btn btn-outline btn-primary text-[#CAEB66] rounded-full hover:bg-[#8bb901] hover:text-black  border-[#CAEB66]">Earn with ZapShift Courier</button>
                     </div>
                 </div>
             </div>

@@ -11,18 +11,18 @@ const AuthProvider = ({ children }) => {
     const [loading, setLoading] = useState(true);
 
     const createUser = (email, Password) => {
-        setLoading(true);
+        
         return createUserWithEmailAndPassword(auth, email, Password);
 
     }
 
     const signInUser = (email, password) => {
-        setLoading(true);
+        
         return signInWithEmailAndPassword(auth, email, password);
     }
 
     const signInWithGoogle = () => {
-        setLoading(true);
+       
         return signInWithPopup(auth, googleProvider);
     }
 
@@ -56,9 +56,9 @@ const AuthProvider = ({ children }) => {
         signOutUser
     };
     return (
-        <AuthContext value={authInfo}>
+        <AuthContext.Provider value={authInfo}>
             {children}
-        </AuthContext>
+        </AuthContext.Provider>
     );
 };
 
