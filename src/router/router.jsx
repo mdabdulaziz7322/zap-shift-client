@@ -27,6 +27,7 @@ import Payouts from "../pages/Dashboard/Payouts/Payouts";
 import DashboardHome from "../pages/Dashboard/DashboardHome/DashboardHome";
 import AboutUs from "../pages/AboutUs/AbouUs";
 import ContactUs from "../pages/ContactUs/ContactUs";
+import MakeAdmin from "../pages/Dashboard/MakeAdmin/MakeAdmin";
 
 
 export const router = createBrowserRouter([
@@ -118,7 +119,7 @@ export const router = createBrowserRouter([
       },
       {
         path: "make-admin",
-        element: <AdminRoute><Payouts></Payouts></AdminRoute>
+        element: <AdminRoute> <MakeAdmin></MakeAdmin> </AdminRoute>
       },
       {
         path: 'pending-deliveries',
